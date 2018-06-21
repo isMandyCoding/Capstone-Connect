@@ -1,6 +1,3 @@
-import api from '../../api/imgur';
-import qs from 'qs';
-import { router } from '../../main';
 import axios from 'axios';
 
 
@@ -39,38 +36,36 @@ const mutations = {
 };
 
 const actions = {
-  async fetchAllProjects ({ rootState, commit }) {
-     const { token } = rootState.auth;
-     const response = await axios.get('http://localhost:8000/admin/projects')
+  async fetchAllProjects ({ commit }) {
+     await axios.get('http://localhost:8000/admin/projects')
      .then(res => {
        commit('setProjects', res.data)
      })
-     .catch(err => console.log(err));
+     .catch(err => err);
 
   },
 
-  async getProjectById ({ commit, state }, id){
-    const response = await axios.get(`http://localhost:8000/projects/${id}`)
+  async getProjectById ({ commit }, id){
+    await axios.get(`http://localhost:8000/projects/${id}`)
     .then(res => {
-      console.log('store res', res[0])
       commit('setProjectPage', res.data[0]);
     })
-    .catch(err => console.log(err));
+    .catch(err => err);
   },
 
-  addNewProject ({ commit, state}, newProject ){
+  addNewProject ({ commit }, newProject ){
     axios.post('http://localhost:8000/admin/new_project', newProject)
     .then( () => {
       commit('addProject', newProject);
     })
   },
 
-  async fetchAllOpenProjects ({ rootState, commit }) {
-     const response = await axios('http://localhost:8000/student/projects')
+  async fetchAllOpenProjects ({ commit }) {
+    await axios('http://localhost:8000/student/projects')
      .then(res => {
        commit('setProjects', res.data)
      })
-     .catch(err => console.log(err));
+     .catch(err => err);
   },
 
   filterByRole ({rootState, commit}, role){
@@ -83,7 +78,6 @@ const actions = {
     let project = rootState.projects.projects.filter(function(ele){
       return ele.project_id === id;
     })[0];
-    console.log('filtering for ', project)
     commit('setCurrentProject', project);
   }
 
