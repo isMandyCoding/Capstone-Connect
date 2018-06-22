@@ -75,9 +75,9 @@ app.post('/new_user', function(req, res){
 })
 
 app.get('/projects/:id', function(req, res){
-  knex('projects')
+  knex.table('projects')
   .where({"project_id": req.params.id})
-  .join('users', {'projects.project_owner_id' : 'users.user_id'})
+  .innerJoin('users', 'projects.project_owner_id', '=', 'users.user_id')
   .then(project => res.json(project))
   .catch((err)=> console.log(err));
 })

@@ -6,7 +6,9 @@ const state = {
   project_page: 'null',
   requested_info: [],
   bookmarked: [],
-  committed: null
+  committed: null,
+  project_page_open_projects: [],
+  project_page_in_progress_projects: []
 };
 
 const getters = {
@@ -16,7 +18,9 @@ const getters = {
     AllOpenProjects: function (state) {
       return state.projects;
     },
-    getNewProject: state => state.newProject
+    getNewProject: state => state.newProject,
+    getOpenProjectsByBusinessId: state => state.project_page_open_projects,
+    getInProgressProjectsByBusinessId: state => state.project_page_in_progress_projects,
 };
 
 const mutations = {
@@ -29,6 +33,12 @@ const mutations = {
   setProjectPage: (state, project)=> {
     state.project_page = project;
 
+  },
+  setOpenProjects: (state, projects)=> {
+    state.project_page_open_projects = projects;
+  },
+  setInProgressProjects: (state, projects)=> {
+    state.project_page_in_progress_projects = projects;
   },
   clear_new_project: (state) => {
     state.newProject = null;
@@ -62,6 +72,14 @@ const actions = {
 
   async fetchAllOpenProjects ({ commit }) {
     await axios('http://localhost:8000/student/projects')
+     .then(res => {
+       commit('setProjects', res.data)
+     })
+     .catch(err => err);
+  },
+
+  async fetchOpenProjectsById ({ commit }, id) {
+    await axios('http://localhost:8000/users/:id/projects')
      .then(res => {
        commit('setProjects', res.data)
      })

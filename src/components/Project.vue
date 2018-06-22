@@ -33,7 +33,7 @@
     <sui-grid-row :columns="2">
       <sui-grid-column>
         <h3 v-if="isStudent || isAdmin">Company</h3>
-        <p v-if="isStudent || isAdmin">{{project.company}}</p>
+        <p v-if="isStudent || isAdmin">{{project.company ? project.company : "Unspecified"}}</p>
 
 
         <h3>Role</h3>
@@ -44,7 +44,7 @@
         <p v-if="project.paid_opportunities">{{project.paid_opportunities}}</p>
 
         <h3>Contact</h3>
-        <p>{{project.name}}</p>
+        <p>{{project.name ? project.name : "No name given"}}</p>
         <p v-if="project.website"><i class="linkify icon"></i>{{project.website}}</p>
         <p v-if="project.email"><i class="envelope icon"></i>{{project.email}}</p>
         <p v-if="project.phone"><i class="phone icon"></i>{{project.phone}}</p>

@@ -5,7 +5,7 @@
     <div class="wrapper">
 
       <h1>
-        {{profile.name ? profile.name.toUpperCase() : 'loading...'}}
+        {{profile.name ? profile.name : 'loading...'}}  {{profile.company ? "at " + profile.company : 'loading...'}}
       </h1>
 
     </div>
@@ -37,8 +37,7 @@
               </sui-button>
               <sui-button v-if="isStudent" class="highlight-background" name="Commit">Commit to Project</sui-button>
               <sui-button v-if="isStudent" class="highlight"  name="Request"><i class="question circle outline icon"></i> Request Info</sui-button>
-              <sui-button v-if="isStudent" class="highlight"  name="Message"><i class="envelope outline icon"></i> Message</sui-button>
-              <sui-button v-if="isStudent || isAdmin" class="highlight"  name="Bookmark"><i class="bookmark outline icon"></i> Bookmark</sui-button>
+              <sui-button v-if="isStudent || isAdmin" class="highlight"  name="Message"><i class="envelope outline icon"></i> Message</sui-button>
               <sui-button v-if="isBusiness || isAdmin" class="highlight"  name="Edit"><i class="edit outline icon"></i> Edit</sui-button>
               <sui-button v-if="isBusiness || isAdmin" class="highlight"  name="Delete"><i class="trash alternate icon"></i> Delete</sui-button>
               <sui-button v-if="isStudent" class="highlight" basic name="Message"><i class="envelope outline icon"></i> Message</sui-button>
@@ -46,25 +45,7 @@
 
       </sui-menu>
 
-
-
-
-
-
-    <sui-menu  secondary>
-
-    </sui-menu>
-
-
-    <sui-grid divided="vertically">
-    <sui-grid-row :columns="2">
-      <sui-grid-column>
-        <h3>Company</h3>
-        <p>{{profile.company ? profile.company : 'loading...'}}</p>
-
-
         <h3>Contact</h3>
-        <p>{{profile.name ? profile.name : 'loading'}}</p>
         <p v-if="profile.website"><i class="linkify icon"></i>{{profile.website}}</p>
         <p v-if="profile.email"><i class="envelope icon"></i>{{profile.email}}</p>
         <p v-if="profile.phone"><i class="phone icon"></i>{{profile.phone}}</p>
@@ -72,61 +53,76 @@
         <h3 v-if="profile.timestamp">Created</h3>
         <p v-if="profile.timestamp"><i class="calendar alternate outline icon"></i>{{profile.timestamp}}</p>
 
-        </sui-grid-column>
-      <sui-grid-column>
 
         <h3>Open Projects</h3>
 
-        <sui-table celled striped>
-          <sui-table-header>
-            <sui-table-row>
-              <sui-table-headerCell colspan="3">Users</sui-table-headerCell>
-            </sui-table-row>
-          </sui-table-header>
+        <table v-if="isLoggedIn" class="ui celled table">
+          <thead>
+            <tr>
+              <th>Project ID</th>
+              <th>Project Name</th>
+              <th>Role</th>
+              <th>Project Type</th>
+            </tr>
+          </thead>
 
-          <sui-table-body>
-            <sui-table-row>
-              <sui-table-cell collapsing>
-                User Title
-              </sui-table-cell>
-              <sui-table-cell>Committed Student</sui-table-cell>
-            </sui-table-row>
+          <tbody>
+            <tr v-for="project in projects" :key="project.project_id">
 
-          </sui-table-body>
-        </sui-table>
+              <td>{{project.project_id}}</td>
+              <td>
+                  <router-link :to="`/projects/${project.project_id}`">
+                    <span class="project_name">{{project.project_name}}</span>
+                  </router-link>
+              </td>
+              <td>
+                <i v-if="project.role_type.includes('Data')" class="flask icon"></i>
+                <i v-if="project.role_type.includes('Web')" class="cloud icon"></i>
+              </td>
+              <td>
+                {{project.project_type ? project.project_type : "Unspecified"}}
+              </td>
+            </tr>
+          </tbody>
 
-        <h3>In Progress</h3>
-
-        <sui-table celled striped>
-          <sui-table-header>
-            <sui-table-row>
-              <th>
-                <td>Project ID</td>
-                <td>Name</td>
-                <td>Type</td>
-              </th>
-            </sui-table-row>
-          </sui-table-header>
-
-          <sui-table-body>
-            <sui-table-row>
-              <td>{{project ? project.project_id : 'loading...'}}</td>
-              <sui-table-cell collapsing>
-                User Title
-              </sui-table-cell>
-                <td>
-                  <!-- {{project.project_type ? project.project_type : "Unspecified"}} -->
-                </td>
-            </sui-table-row>
-
-          </sui-table-body>
-        </sui-table>
+        </table>
 
 
-      </sui-grid-column>
-    </sui-grid-row>
 
-    </sui-grid>
+        <h3 v-if="isAdmin || isBusiness">In Progress</h3>
+
+        <table v-if="isLoggedIn" class="ui celled table">
+          <thead>
+            <tr>
+              <th>Project ID</th>
+              <th>Project Name</th>
+              <th>Role</th>
+              <th>Project Type</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr v-for="project in projects" :key="project.project_id">
+
+              <td>{{project.project_id}}</td>
+              <td>
+                  <router-link :to="`/projects/${project.project_id}`">
+                    <span class="project_name">{{project.project_name}}</span>
+                  </router-link>
+              </td>
+              <td>
+                <i v-if="project.role_type.includes('Data')" class="flask icon"></i>
+                <i v-if="project.role_type.includes('Web')" class="cloud icon"></i>
+              </td>
+              <td>
+                {{project.project_type ? project.project_type : "Unspecified"}}
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+
+
 
 
   </div>
@@ -139,13 +135,17 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
   name: "BusinessProfile",
   computed: {
-    ...mapGetters([
-    'isLoggedIn',
-    'getCurrentUserProfile',
-    'isAdmin',
-    'isStudent',
-    'isBusiness',
-    'isLoggedIn']
+    ...mapGetters(
+      [
+        'isLoggedIn',
+        'getCurrentUserProfile',
+        'isAdmin',
+        'isStudent',
+        'isBusiness',
+        'isLoggedIn',
+        'getOpenProjectsByBusinessId',
+        'getInProgressProjectsByBusinessId'
+      ]
   ),
   profile() {
     return this.$store.state.users.current_user_profile;
@@ -179,9 +179,8 @@ sui-container{
   margin-left: 20% !important;
 }
 h1 {
-  font-family: "museo-sans", sans-serif;
   color: white;
-  letter-spacing: .4rem;
+  letter-spacing: .2rem;
   font-weight: 200;
 }
 
@@ -228,6 +227,14 @@ h4{
   background-color: gray;
   border-radius: 50px;
   color: white;
+}
+
+.narrow {
+  width: 30% !important;
+}
+
+.wide {
+  width: 60% !important;
 }
 
 .menu-wrapper {
