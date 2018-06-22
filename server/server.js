@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/admin/projects', function(req, res, next){
   knex('projects')
-  .join('users', {'projects.project_owner_id': 'users.user_id'})
+  .fullOuterJoin('users', {'projects.project_owner_id': 'users.user_id'})
   .orderBy('timestamp', 'desc')
   .then(projects => res.json(projects))
 })

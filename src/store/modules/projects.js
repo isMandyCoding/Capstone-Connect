@@ -49,6 +49,7 @@ const actions = {
   async fetchAllProjects ({ commit }) {
      await axios.get('http://localhost:8000/admin/projects')
      .then(res => {
+       console.log(res.data);
        commit('setProjects', res.data)
      })
      .catch(err => err);
