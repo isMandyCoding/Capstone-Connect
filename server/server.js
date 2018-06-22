@@ -29,6 +29,7 @@ app.get('/users', function(req, res, next){
   .then(users => res.json(users))
 })
 
+
 app.get('/users/:id', function(req,res ){
   knex('users')
   .where("user_id", req.params.id)

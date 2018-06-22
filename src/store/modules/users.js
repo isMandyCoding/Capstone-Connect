@@ -9,7 +9,7 @@ const state = {
   businesses: [],
   students: [],
   access_requests: [],
-  user_page: null,
+  current_user_profile: {},
   newUser: null
 };
 
@@ -27,7 +27,12 @@ const getters = {
     accessRequests: function (state) {
       return state.access_requests;
     },
-    getNewUser: state => state.newUser
+    getNewUser: function (state) {
+      return state.new_user;
+    },
+    getCurrentUserProfile: function (state) {
+      return state.current_user_profile;
+    }
 };
 
 const mutations = {
@@ -46,6 +51,9 @@ const mutations = {
   addUser (state, newUser) {
     console.log('newUser in mutater', newUser)
     state.users.push(newUser);
+  },
+  setCurrentUserProfile: function (state, user) {
+    state.current_user_profile = user;
   }
 };
 
@@ -68,7 +76,14 @@ const actions = {
     .then( () => {
       commit('addUser', newUser);
     })
-  }
+  },
+  async getUserById ({ commit }, id){
+    await axios.get(`http://localhost:8000/users/${id}`)
+    .then(res => {
+      commit('setCurrentUserProfile', res.data[0]);
+    })
+    .catch(err => err);
+  },
 
 }
 

@@ -77,7 +77,7 @@ export default {
   name: "NewUserForm",
   computed: {...mapGetters([
     'isLoggedIn',
-    'getCurrentUser',
+    'getCurrentUserProfile',
     'isAdmin',
     'isStudent',
     'isBusiness',

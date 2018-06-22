@@ -108,7 +108,7 @@ export default {
     'getCurrentProject',
     'isAdmin',
     'isStudent',
-    'getBusinesses'
+    'getBusinesses',
   ]) },
   methods: {
     ...mapActions(['addNewProject']),

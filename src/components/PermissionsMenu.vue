@@ -51,7 +51,7 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
     name: 'PermissionsMenu',
     computed: {
-      ...mapGetters(['isAdmin', 'isLoggedIn'])
+      ...mapGetters(['isAdmin', 'isLoggedIn', 'isBusiness'])
     },
     data(){
       return {
