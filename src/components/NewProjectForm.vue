@@ -89,7 +89,9 @@
         </sui-form-field>
 
 
-        <sui-button type="submit" color="orange">Submit</sui-button>
+        <sui-button type="submit" color="orange">
+            Submit
+        </sui-button>
       </sui-form>
 
 
@@ -111,10 +113,11 @@ export default {
     'getBusinesses',
   ]) },
   methods: {
-    ...mapActions(['addNewProject']),
+    ...mapActions(['addNewProject', 'fetchAllOpenProjects']),
     handleSubmit: function(){
       // this.addNewProject()
       this.addNewProject(this.newProject);
+      this.fetchAllOpenProjects();
     }
   },
   data() {
@@ -123,7 +126,7 @@ export default {
       {
                "project_owner_id": null,
                "committed_student_id": null,
-               "project_name": "ANOTHER SAMPLE TEST",
+               "project_name": "Short and descriptive title",
                "project_type": "Capstone",
                "tools": "Javascript",
                "paid_opportunities": "this is a capstone project",
