@@ -9,7 +9,8 @@ const state = {
   businesses: [],
   students: [],
   access_requests: [],
-  user_page: null
+  user_page: null,
+  newUser: null
 };
 
 const getters = {
@@ -43,10 +44,8 @@ const mutations = {
     state.access_requests = state.users.filter(ele => ele["is_approved"] === false);
   },
   addUser (state, newUser) {
+    console.log('newUser in mutater', newUser)
     state.users.push(newUser);
-  },
-  clear_new_user (state) {
-    state.newUser = null;
   }
 };
 
@@ -64,17 +63,11 @@ const actions = {
      .catch(err => console.log(err));
 
   },
-  addNewuser ({ commit, state, newUser }){
-    if (!state.newUser){
-      return;
-    }
-    axios.post('/new_user', newUser)
+  addNewUser ({ commit }, newUser ){
+    axios.post('http://localhost:8000/new_user', newUser)
     .then( () => {
-      commit('adduser', newUser);
+      commit('addUser', newUser);
     })
-  },
-  clearNewuser ({ commit }) {
-    commit('clear_new_user')
   }
 
 }

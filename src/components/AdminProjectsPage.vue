@@ -9,9 +9,6 @@
       <div v-if="isLoggedIn">
 
         <h1>ADMIN DASHBOARD</h1>
-        <div class="spacer">
-
-        </div>
         <sui-menu secondary>
           <sui-menu-item>
 
@@ -124,7 +121,9 @@ h1 {
 }
 
 .container {
-  margin-top: 110px;
+  margin-top: 50px;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 
 .new_project_button {
@@ -151,7 +150,7 @@ table {
 .wrapper {
 	height: 95px;
 	width: 100%;
-	background-image: url("../img/gerome-bruneau-65759-unsplash.jpg");
+	background-image: url("../img/di-maitland-474788-unsplash.jpg");
   background-size: 100%;
 	position: absolute;
 	left: 0;
@@ -179,7 +178,4 @@ table {
   z-index: -1;
 }
 
-.spacer {
-  height: 3px;
-}
 </style>

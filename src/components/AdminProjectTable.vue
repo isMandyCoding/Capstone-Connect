@@ -16,7 +16,7 @@
 
       <td>{{project.name}}</td>
       <td>{{project.company}}</td>
-      <td
+      <td>
           <router-link :to="`/projects/${project.project_id}`">
             <span class="project_name">{{project.project_name}}</span>
           </router-link>

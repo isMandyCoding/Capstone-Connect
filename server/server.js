@@ -58,6 +58,21 @@ app.post('/admin/new_project', function(req, res){
   .catch((err)=> console.log(err))
 })
 
+app.post('/new_user', function(req, res){
+  knex('users')
+  .insert({
+    name: req.body.name,
+    email: req.body.email,
+    company: req.body.company,
+    website: req.body.website,
+    phone: req.body.phone,
+    role: req.body.role,
+    is_approved: false,
+  })
+  .then(users => res.json(users))
+  .catch((err)=> console.log(err))
+})
+
 app.get('/projects/:id', function(req, res){
   knex('projects')
   .where({"project_id": req.params.id})

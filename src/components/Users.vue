@@ -12,6 +12,10 @@
 
         <PermissionsMenu></PermissionsMenu>
 
+        <div class="spacer">
+
+        </div>
+
         <table v-if="isLoggedIn" class="ui celled table">
           <thead>
             <tr>
@@ -26,7 +30,7 @@
             <tr v-for="user in allUsers" :key="user.user_id">
 
               <td>{{user.company}}</td>
-              <td
+              <td>
                   <router-link :to="`/users/${user.user_id}`">
                     <span class="user_name">{{user.name}}</span>
                   </router-link>
@@ -105,7 +109,7 @@ table {
 .wrapper {
 	height: 95px;
 	width: 100%;
-	background-image: url("../img/olia-gozha-34223-unsplash.jpg");
+	background-image: url("../img/joel-bader-478853-unsplash.jpg");
   background-size: 100%;
 	position: absolute;
 	left: 0;
@@ -116,6 +120,10 @@ table {
   padding-left: 20%;
   padding-right: 20%;
   z-index: -1;
+}
+
+.spacer {
+  height: 60px;
 }
 
 

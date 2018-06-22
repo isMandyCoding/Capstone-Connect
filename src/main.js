@@ -4,7 +4,6 @@ import VueRouter from 'vue-router';
 import App from './App';
 import store from './store';
 import AuthHandler from './components/AuthHandler';
-//import ImageList from './components/ImageList';
 import NewProjectForm from './components/NewProjectForm';
 import AdminProjectsPage from './components/AdminProjectsPage';
 import StudentOpenProjectsList from './components/StudentOpenProjectsList';
@@ -16,6 +15,7 @@ import Welcome from './components/Welcome';
 import Project from './components/Project';
 import BusinessProfile from './components/BusinessProfile';
 import Users from './components/Users';
+import NewUserForm from './components/NewUserForm';
 
 
 Vue.use(VueRouter);
@@ -34,6 +34,7 @@ export const router = new VueRouter({
     { path: '/admin/projects', component: AdminProjectsPage },
     { path: '/users', component: Users},
     { path: '/admin/new_project', component: NewProjectForm },
+    { path: '/admin/new_user', component: NewUserForm },
 
     //for everyone
     { path: '/projects/:id', component: Project },

@@ -99,8 +99,8 @@ export default {
         .then(res => {
           console.log('this.$store.state.projects', this.$store.state.projects)
         })
-        console.log('this.project', this.project)
-        console.log('getprojectby id', this.getProjectById(this.$route.params.id))
+        // console.log('this.project', this.project)
+        // console.log('getprojectby id', this.getProjectById(this.$route.params.id))
     }
   }
 }
