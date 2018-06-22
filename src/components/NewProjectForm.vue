@@ -1,18 +1,17 @@
 <template>
+  <div>
+    <div class="wrapper">
+    </div>
+    <div class="container">
 
-    <sui-container>
-
-      <router-link v-if="isStudent" to="/student/projects"><h4><i class="angle double left icon"></i>Back</h4></router-link>
-      <router-link v-if="isAdmin" to="/admin/projects"><h4><i class="angle double left icon"></i>Back</h4></router-link>
 
       <h1>CREATE A PROJECT</h1>
 
       <sui-form @submit.prevent="handleSubmit">
 
 
-        <sui-form-field
-          v-if="isAdmin"
-          <h3>Business contact</h3>
+        <sui-form-field v-if="isAdmin">
+          <h3>Business Contact</h3>
           <input
              type="text"
              placeholder="Enter business ID"
@@ -20,7 +19,8 @@
         </sui-form-field>
 
         <sui-form-field>
-          <h3>Project title (short, descriptive summary of the project)</h3>
+          <h3>Project Title</h3>
+          <p>Should be a short, descriptive summary of the project.</p>
           <input
              type="text"
              placeholder="Ex. Sales dashboard, Insurance marketplace, Health tracker"
@@ -28,7 +28,19 @@
         </sui-form-field>
 
         <sui-form-field>
+          <h3>Role Type</h3>
+          <p>Is this project for a web developer or data scientist?</p>
+          <sui-dropdown
+            placeholder="Full Stack Web Developer"
+            selection
+            :options="roles"
+            v-model="newProject.role_type"
+          />
+        </sui-form-field>
+
+        <sui-form-field>
           <h3>Project type</h3>
+          <p>Is this a capstone project or another type of opportunity?</p>
           <sui-dropdown
             selection
             value="project_type"
@@ -38,7 +50,8 @@
         </sui-form-field>
 
         <sui-form-field>
-          <h3>What tools or technologies should the student use? (optional)</h3>
+          <h3>Tools</h3>
+          <p>What tools or technologies should the student use? (optional)</p>
           <input
             type="text"
             placeholder="Ex. JavaScript, React, Android, iOS, Python, Java, etc."
@@ -47,31 +60,23 @@
 
         <sui-form-field>
           <h3>Description</h3>
+          <p>Describe the scope and main features of this project.</p>
           <input
             type="text"
             class="tall"
-            placeholder="Describe the main features of this project"
             v-model="newProject.description">
         </sui-form-field>
 
         <sui-form-field>
-          <h3>What business problem does this project solve?</h3>
+          <h3>Business Problem</h3>
+          <p>What business problem does this project solve? This helps the student understand the context and purpose of the project.</p>
           <input
             type="text"
             class="medium"
-            placeholder="Main objectives"
             v-model="newProject.business_problem">
         </sui-form-field>
 
-        <sui-form-field>
-          <h3>Is this project for a web developer or data scientist?</h3>
-          <sui-dropdown
-            placeholder="Full Stack Web Developer"
-            selection
-            :options="roles"
-            v-model="newProject.role_type"
-          />
-        </sui-form-field>
+
 
         <sui-form-field>
           <h3>Is there an opportunity for the student to get paid for this project?</h3>
@@ -89,8 +94,8 @@
 
 
 
-  </sui-container>
-
+  </div>
+</div>
 </template>
 
 <script>
@@ -150,15 +155,16 @@ export default {
 
 h1 {
   font-family: "museo-sans", sans-serif;
-  color: orange;
+  color: white;
   letter-spacing: .4rem;
   font-weight: 200;
-  margin-top: 30px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 h3 {
   margin-top: 30px;
-  color: gray;
+  color: orange;
 }
 
 h4 {
@@ -174,10 +180,26 @@ h4 {
   height: 150px;
 }
 
-sui-container{
-  margin-top: 100px !important;
-  margin-left: 20% !important;
+.container{
+  margin-top: 60px;
+  margin-left: 20%;
+  margin-right: 20%;
 }
 
+
+.wrapper {
+	height: 110px;
+	width: 100%;
+	background-image: url('../img/gerome-bruneau-65759-unsplash.jpg');
+	position: absolute;
+	left: 0;
+	top: 60px;
+	display: block;
+	align-items: left;
+  padding-top: 50px;
+  padding-left: 20%;
+  padding-right: 20%;
+  z-index: -1;
+}
 
 </style>

@@ -9,11 +9,12 @@ const state = {
   businesses: [],
   students: [],
   access_requests: [],
-  newUser: null
+  user_page: null
 };
 
 const getters = {
     allUsers: function (state) {
+
       return state.users;
     },
     allBusinesses: function (state) {
@@ -52,11 +53,13 @@ const mutations = {
 const actions = {
   async fetchAllusers ({ rootState, commit }) {
      const { token } = rootState.auth;
-     const response = await axios.get('http://localhost:8000/admin/users')
+     const response = await axios.get('http://localhost:8000/users')
      .then(res => {
+       console.log("i got the users")
        commit('setUsers', res.data);
        commit('setStudents', res.data);
        commit('setBusinesses', res.data);
+       commit('setAccessRequests', res.data);
      })
      .catch(err => console.log(err));
 
@@ -72,30 +75,6 @@ const actions = {
   },
   clearNewuser ({ commit }) {
     commit('clear_new_user')
-  },
-  async fetchAllOpenusers ({ rootState, commit }) {
-     const { token } = rootState.auth;
-     const response = await axios('http://localhost:8000/student/users')
-     .then(res => {
-
-
-       commit('setusers', res.data)
-     })
-     .catch(err => console.log(err));
-
-  },
-  filterByRole ({rootState, commit}, role){
-    let filtered = rootState.users.users.filter(function(ele){
-      return ele.role_type.indexOf(role) !== -1;
-    })
-    commit('setusers', filtered)
-  },
-  filterById ({rootState, commit}, id){
-    let user = rootState.users.users.filter(function(ele){
-      return ele.user_id === id;
-    })[0];
-    console.log('filtering for ', user)
-    commit('setCurrentuser', user);
   }
 
 }

@@ -1,6 +1,13 @@
 <template>
   <div >
     <sui-menu pointing secondary>
+          <sui-menu-item>
+
+            <router-link v-if="isAdmin" to="/admin/new_user" tag="sui-button">
+                  <sui-icon name="plus"></sui-icon> Create User
+            </router-link>
+
+          </sui-menu-item>
           <sui-menu-item
             :active="isActive('Full Stack Web Developer')"
             @click="clickedRole('Full Stack Web Developer')"
@@ -16,11 +23,7 @@
             @click="clickedRole('Access')"
           ><i class="id card icon"></i>Access Requests
           </sui-menu-item>
-          <sui-menu-menu position="right">
-            <sui-menu-item>
-              <sui-button tiny basic content="Add User" icon="plus" />
-            </sui-menu-item>
-          </sui-menu-menu>
+
     </sui-menu>
 
 
@@ -33,7 +36,7 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
     name: 'PermissionsMenu',
     computed: {
-      ...mapGetters(['isLoggedIn'])
+      ...mapGetters(['isAdmin', 'isLoggedIn'])
     },
     data(){
       return {

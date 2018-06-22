@@ -31,7 +31,7 @@
         </router-link>
         <router-link
           v-if="isAdmin"
-          to="/admin/users"
+          to="/users"
           class="item"
           :active="isActive(this)"
           @click="select(this)">
@@ -50,7 +50,7 @@
         <router-link
           v-if="isStudent || isBusiness"
           class="item"
-          to="/student/messages/"
+          to="/messages/"
           :active="isActive(this)"
           @click="select(this)"
           ><i class="envelope outline icon"></i>
@@ -58,7 +58,7 @@
         <router-link
           v-if="isLoggedIn"
           class="item"
-          to="/student/messages/"
+          :to="`/bookmarks/${getId}`"
           :active="isActive(this)"
           @click="select(this)"
           ><i class="bookmark outline icon"></i>
@@ -85,7 +85,7 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
   name: 'AppHeader',
   computed: {
-    ...mapGetters(['isLoggedIn', 'isStudent', 'isAdmin', 'isBusiness'])
+    ...mapGetters(['isLoggedIn', 'isStudent', 'isAdmin', 'isBusiness', 'getId'])
   },
   methods: {
     ...mapActions(['login', 'logout']),

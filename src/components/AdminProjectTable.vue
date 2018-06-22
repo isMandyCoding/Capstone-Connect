@@ -5,6 +5,7 @@
       <th>Contact</th>
       <th>Company</th>
       <th>Project Name</th>
+      <th>Role</th>
       <th>Project Type</th>
       <th>Committed Student</th>
       <th>Delete</th>
@@ -16,16 +17,18 @@
       <td>{{project.name}}</td>
       <td>{{project.company}}</td>
       <td
-        <router-link :to="`/projects/${project.project_id}`">
-        <span class="project_name">{{project.project_name}}</span>
-        </router-link>
+          <router-link :to="`/projects/${project.project_id}`">
+            <span class="project_name">{{project.project_name}}</span>
+          </router-link>
       </td>
       <td>
         <i v-if="project.role_type.includes('Data')" class="flask icon"></i>
         <i v-if="project.role_type.includes('Web')" class="cloud icon"></i>
-        {{project.project_type}}
       </td>
-      <td>{{project.committed_student_id}}</td>
+      <td>
+        {{project.project_type ? project.project_type : "Unspecified"}}
+      </td>
+      <td>{{project.committed_student_id ? project.committed_student_id : "None" }}</td>
       <td>
         <sui-button tiny basic color="orange" icon="trash alternate" />
       </td>
@@ -36,23 +39,13 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 
 export default {
-  name: "AdminListView",
+  name: "AdminProjectTable",
   computed: {
     ...mapGetters(['AllProjects', 'isLoggedIn'])
-    // isDataScience: function(role_type){
-    //   console.log('role',role_type)
-    //   return role_type.indexOf("Data") !== -1;
-    // },
-    // isWebDev: function(role){
-    //   return role_type.indexOf("Web") !== -1;
-    // }
-  },
-  methods: {
-
   }
 
 }
@@ -60,6 +53,11 @@ export default {
 </script>
 
 <style scoped>
+
+table {
+  z-index: 1;
+}
+
 .project_name {
   color: orange;
   text-decoration: underline;

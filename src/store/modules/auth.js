@@ -28,14 +28,16 @@ import { router } from '../../main';
 const state = {
   token: window.localStorage.getItem('imgur_token'),
   role: "admin",
-  id: 1
+  id: 1,
+  email: "anna.peralta@galvanize.com"
 };
 
 const getters = {
   isLoggedIn: () => true ,//state => !!state.token,
   isAdmin: state => state.role === "admin",
   isStudent: state => state.role === "student",
-  isBusiness: state => state.role === "business"
+  isBusiness: state => state.role === "business",
+  getId: state => state.id
 };
 
 const mutations = {

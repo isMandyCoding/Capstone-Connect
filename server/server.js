@@ -20,19 +20,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.get('/admin/projects', function(req, res, next){
   knex('projects')
   .join('users', {'projects.project_owner_id': 'users.user_id'})
-  .orderBy('timestamp', 'asc')
+  .orderBy('timestamp', 'desc')
   .then(projects => res.json(projects))
 })
 
-app.get('/admin/users', function(req, res, next){
+app.get('/users', function(req, res, next){
   knex('users')
-  .orderBy('timestamp', 'asc')
   .then(users => res.json(users))
 })
 
-app.get('/profiles/:id', function(req,res ){
+app.get('/users/:id', function(req,res ){
   knex('users')
   .where("user_id", req.params.id)
+  .then(users => res.json(users))
+})
+
+app.get('/bookmarks/:user_id', function(req, res, next){
+  knex("user_id", req.params.id)
+  .where('')
+  .orderBy('timestamp', 'asc')
   .then(users => res.json(users))
 })
 
@@ -55,6 +61,7 @@ app.post('/admin/new_project', function(req, res){
 app.get('/projects/:id', function(req, res){
   knex('projects')
   .where({"project_id": req.params.id})
+  .join('users', {'projects.project_owner_id' : 'users.user_id'})
   .then(project => res.json(project))
   .catch((err)=> console.log(err));
 })

@@ -1,18 +1,7 @@
 <template>
   <div>
 
-      <sui-menu secondary>
-
-        <sui-menu-item>
-
-          <router-link v-if="isAdmin" to="/admin/new_project" tag="sui-button">
-            <sui-icon name="plus"></sui-icon>Create Project
-          </router-link>
-          <router-link v-if="isBusiness" to="/business/new_project" tag="sui-button">
-            <sui-icon name="plus"></sui-icon>Create Project
-          </router-link>
-
-        </sui-menu-item>
+      <sui-menu material class="offwhite">
 
         <sui-menu-item >
           <sui-dropdown
@@ -118,5 +107,8 @@ sui-button:hover {
     background-color: orange !important;
   }
 
+.offwhite {
+  background-color: #EAEAEA;
+}
 
 </style>
