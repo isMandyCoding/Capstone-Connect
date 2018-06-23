@@ -16,6 +16,7 @@ import Project from './components/Project';
 import BusinessProfile from './components/BusinessProfile';
 import Users from './components/Users';
 import NewUserForm from './components/NewUserForm';
+import Bookmarks from './components/Bookmarks';
 
 
 Vue.use(VueRouter);
@@ -39,8 +40,8 @@ export const router = new VueRouter({
     //for everyone
     { path: '/projects/:id', component: Project },
     { path: '/users/:id', component: BusinessProfile},
-    { path: '/messages', component: Messages },
-    { path: '/bookmarks/:id, component: Bookmarks'},
+    { path: '/messages/:id', component: Messages },
+    { path: '/bookmarks/:id', component: Bookmarks},
 
     //for students
     { path: '/student/projects', component: StudentOpenProjectsList },

@@ -10,10 +10,10 @@ const state = {
 };
 
 const getters = {
-    getSent(messages){
+    getSent(state){
       return state.sent;
     },
-    getReceived(messages){
+    getReceived(state){
       return state.received;
     },
 };
@@ -33,12 +33,10 @@ const mutations = {
 
 const actions = {
   async fetchSentMessages ({ rootState, commit }) {
-     const response = await axios.get(`http://localhost:8000/${rootState.auth.role}/messages/${rootState.auth.id}`)
+     const response = await axios.get(`http://localhost:8000/messages/${rootState.auth.id}`)
      .then(res => {
        let sent = res.data.length > 0 ? res.data.filter(ele => {
-         console.log('ele', ele.sender_role)
-         console.log('student role', rootState.auth.role)
-         return ele.sender_role === rootState.auth.role
+         return ele.sender_id === rootState.auth.id
        }) : [];
 
        commit('setSent', sent);
@@ -47,14 +45,16 @@ const actions = {
 
   },
   async fetchReceivedMessages ({ rootState, commit }) {
-     const response = await axios.get(`http://localhost:8000/${rootState.auth.role}/messages/${rootState.auth.id}`)
+     const response = await axios.get(`http://localhost:8000/messages/${rootState.auth.id}`)
      .then(res => {
-       let received = res.data.length > 0 ? res.data.filter(ele => ele.sender_role !== rootState.auth.role) : [];
+       let received = res.data.length > 0 ? res.data.filter(function(ele){
+         return ele.recipient_id === rootState.auth.id
+       }) : [];
+
        commit('setReceived', received);
      })
-     .catch(err => err);
-
-  }
+     .catch(err => err)
+   }
 
 }
 

@@ -34,7 +34,7 @@
 
             <tbody v-if="getReceived.length > 0">
               <tr v-for="message in getReceived" :key="message.message_id">
-                <td>{{message.contact_name}}</td>
+                <td>{{message.sender_id}}</td>
                 <td>{{message.contact_company}}</td>
                 <td>{{message.message}}</td>
                 <td>{{message.timestamp}}</td>
@@ -61,7 +61,7 @@
             </thead>
             <tbody v-if="getSent.length > 0">
               <tr v-for="message in getSent" :key="message.message_id">
-                <td>{{message.contact_name}}</td>
+                <td>{{message.recipient_id}}</td>
                 <td>{{message.contact_company}}</td>
                 <td>{{message.message}}</td>
                 <td>{{message.timestamp}}</td>

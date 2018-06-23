@@ -29,7 +29,14 @@
       </td>
       <td>{{project.committed_student_id ? project.committed_student_id : "None" }}</td>
       <td>
-        <sui-button tiny basic color="orange" icon="trash alternate" />
+        <sui-button
+          v-if="project"
+          tiny
+          basic
+          color="orange"
+          icon="trash alternate"
+          v-on:click="removeElement(project.project_id)"
+          />
       </td>
     </tr>
   </tbody>
@@ -47,7 +54,11 @@ export default {
     ...mapGetters(['AllProjects', 'isLoggedIn'])
   },
   methods: {
-    ...mapActions(['fetchAllProjects'])
+    ...mapActions(['fetchAllProjects', 'deleteProjectById']),
+    removeElement: function (index) {
+      console.log('project id to be deleted ', index)
+      this.deleteProjectById(index);
+    }
   },
   created() {
     console.log('the state is now', this.$store.state.projects.projects)

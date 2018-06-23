@@ -28,7 +28,7 @@ import { router } from '../../main';
 const state = {
   token: window.localStorage.getItem('imgur_token'),
   role: "admin",
-  id: 1,
+  id: 28,
   email: "anna.peralta@galvanize.com"
 };
 

@@ -36,10 +36,20 @@ app.get('/users/:id', function(req,res ){
   .then(users => res.json(users))
 })
 
-app.get('/bookmarks/:user_id', function(req, res, next){
-  knex("user_id", req.params.id)
-  .where('')
-  .orderBy('timestamp', 'asc')
+app.get('/messages/:id', function(req, res){
+
+  knex('messages')
+  .where(function () {
+    this
+      .where("sender_id", req.params.id)
+      .orWhere("recipient_id", req.params.id)
+  })
+  .then(messages => res.json(messages))
+})
+
+app.get('/bookmarks/:id', function(req, res, next){
+  knex('bookmarks')
+  .where("user_id", req.params.id)
   .then(users => res.json(users))
 })
 

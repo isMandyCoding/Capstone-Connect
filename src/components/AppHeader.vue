@@ -49,7 +49,7 @@
         </router-link>
         <router-link
           class="item"
-          to="/messages/"
+          :to="`/messages/${getId}`"
           :active="isActive(this)"
           @click="select(this)"
           ><i class="envelope outline icon"></i>
