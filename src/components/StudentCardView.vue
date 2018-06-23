@@ -16,8 +16,9 @@
           <sui-card-header class="highlight">
             <i v-if="project.role_type.includes('Data')" class="flask icon"></i>
             <i v-if="project.role_type.includes('Web')" class="globe icon"></i>
-            {{project.contact_name}}
-            <sui-icon class="right floated" size="small" name="bookmark outline" />
+            <router-link v-if="project" :to="`/projects/${project.project_id}`">
+              <span class="project_name" >{{project.project_name ? project.project_name : "Untitled"}}</span>
+            </router-link>
           </sui-card-header>
           <sui-card-meta >{{project.contact_company}}</sui-card-meta>
           <sui-card-description>

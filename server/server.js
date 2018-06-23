@@ -161,9 +161,13 @@ app.get('/projects/:id', function(req, res){
 app.get('/student/projects', function(req, res, next){
   knex('projects')
   .where({committed_student_id: null})
+
   .orderBy('timestamp', 'asc')
+  .join('users', {'projects.project_owner_id': 'users.user_id'})
   .then(projects => res.json(projects))
 })
+
+
 
 app.get('/student/messages/:id', function(req, res, next){
   knex('messages')

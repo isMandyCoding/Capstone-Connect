@@ -31,16 +31,18 @@
   <tbody>
     <tr v-for="project in AllOpenProjects" :key="project.project_id">
 
-      <td>{{project.contact_name}}</td>
-      <td>{{project.contact_company}}</td>
+      <td>{{project.name ? project.name : "No name given"}}</td>
+      <td>{{project.company ? project.company: "No company given"}}</td>
       <td>
         <i v-if="project.role_type.includes('Data')" class="flask icon"></i>
         <i v-if="project.role_type.includes('Web')" class="globe icon"></i>
         {{project.project_type}}
       </td>
       <td>{{project.tools.slice(0, 120)}}</td>
-      <td @click="updateCurrentProject(project)">
-        <sui-button tiny basic color="orange" content="View"  />
+      <td>
+        <router-link v-if="project" :to="`/projects/${project.project_id}`">
+          <span class="project_name" >{{project.project_name ? project.project_name : "Untitled"}}</span>
+        </router-link>
       </td>
       <td>
         <sui-button tiny basic color="orange"  icon="bookmark outline" />
@@ -56,23 +58,17 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import { router } from 'vue-router';
+
 export default {
   name: "StudentListView",
   computed: {
     ...mapGetters(['AllOpenProjects', 'isLoggedIn'])
-    // isDataScience: function(role_type){
-    //   console.log('role',role_type)
-    //   return role_type.indexOf("Data") !== -1;
-    // },
-    // isWebDev: function(role){
-    //   return role_type.indexOf("Web") !== -1;
-    // }
   },
   methods: {
-    updateCurrentProject: function(project){
-      this.$store.commit('setCurrentProject', project)
-      this.$router.push({ path: "/student/projects/project"})
-    }
+    ...mapActions(['fetchAllProjects'])
+  },
+  created() {
+    this.fetchAllProjects()
   },
   data(){
 
