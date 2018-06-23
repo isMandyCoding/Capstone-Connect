@@ -15,7 +15,7 @@
           <input
              type="text"
              placeholder="Enter business ID"
-             v-model="newProject.business_id">
+             v-model="newProject.project_owner_id">
         </sui-form-field>
 
         <sui-form-field>

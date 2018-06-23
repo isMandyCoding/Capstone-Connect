@@ -1,9 +1,7 @@
 <template>
 <div>
   <div class="wrapper">
-    <h1>
-      <i v-if="project.role_type && project.role_type.includes('Data')" class="flask icon"></i>
-      <i v-if="project.role_type && project.role_type.includes('Web')" class="cloud icon"></i>
+    <h1 v-if="project">
       {{project.project_name}}
     </h1>
   </div>
@@ -29,7 +27,7 @@
     <div class="spacer">
     </div>
 
-    <sui-grid divided="vertically">
+    <sui-grid divided="vertically" v-if="project">
     <sui-grid-row :columns="2">
       <sui-grid-column>
         <h3 v-if="isStudent || isAdmin">Company</h3>
@@ -37,14 +35,15 @@
 
 
         <h3>Role</h3>
-        <p>{{project.role_type}}</p>
+        <p>{{project.role_type ? project.role_type : "Unspecified"}}</p>
 
 
         <h3 v-if="project.paid_opportunities">Paid Opportunities</h3>
         <p v-if="project.paid_opportunities">{{project.paid_opportunities}}</p>
 
         <h3>Contact</h3>
-        <p>{{project.name ? project.name : "No name given"}}</p>
+        <p v-if="project.name">{{ project.name }}</p>
+        <p v-if="project.name">"No name given"</p>
         <p v-if="project.website"><i class="linkify icon"></i>{{project.website}}</p>
         <p v-if="project.email"><i class="envelope icon"></i>{{project.email}}</p>
         <p v-if="project.phone"><i class="phone icon"></i>{{project.phone}}</p>
@@ -57,13 +56,13 @@
       </sui-grid-column>
       <sui-grid-column>
         <h3>Description</h3>
-        <p>{{project.description}}</p>
+        <p>{{project.description ? project.description : "No description"}}</p>
 
         <h3 v-if="project.business_problem">Business Problem</h3>
         <p v-if="project.business_problem">{{project.business_problem}}</p>
 
         <h3>Tools</h3>
-        <p>{{project.tools}}</p>
+        <p>{{project.tools ? project.tools : "Unspecified"}}</p>
       </sui-grid-column>
     </sui-grid-row>
 
@@ -82,7 +81,7 @@ export default {
   computed: {
     ...mapGetters(['isLoggedIn', 'isAdmin', 'isStudent', 'isBusiness']),
     project() {
-      return this.$store.state.projects.project_page
+      return this.$store.state.projects.current_project
     }
   },
   created (){

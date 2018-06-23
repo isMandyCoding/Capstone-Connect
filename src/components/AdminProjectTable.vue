@@ -1,5 +1,5 @@
 <template>
-<table v-if="isLoggedIn" class="ui celled table">
+<table v-if="isLoggedIn && AllProjects" class="ui celled table">
   <thead>
     <tr>
       <th>Contact</th>
@@ -12,18 +12,17 @@
   </tr></thead>
 
   <tbody>
-    <tr v-for="project in AllProjects" :key="project.project_id">
+    <tr v-if="AllProjects[0]" v-for="project in AllProjects" :key="project.project_id">
 
-      <td>{{project.name}}</td>
-      <td>{{project.company}}</td>
+      <td>{{project.name ? project.name : "Untitled" }}</td>
+      <td>{{project.company ? project.company : "Unspecified" }}</td>
       <td>
-          <router-link :to="`/projects/${project.project_id}`">
-            <span class="project_name">{{project.project_name}}</span>
+          <router-link v-if="project" :to="`/projects/${project.project_id}`">
+            <span class="project_name" >{{project.project_name ? project.project_name : "Untitled"}}</span>
           </router-link>
       </td>
       <td>
-        <i v-if="project.role_type.includes('Data')" class="flask icon"></i>
-        <i v-if="project.role_type.includes('Web')" class="cloud icon"></i>
+          {{project.role_type ? project.role_type : "Unspecified"}}
       </td>
       <td>
         {{project.project_type ? project.project_type : "Unspecified"}}
@@ -39,14 +38,21 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 
 export default {
   name: "AdminProjectTable",
   computed: {
     ...mapGetters(['AllProjects', 'isLoggedIn'])
-  }
+  },
+  methods: {
+    ...mapActions(['fetchAllProjects'])
+  },
+  created() {
+    console.log('the state is now', this.$store.state.projects.projects)
+    this.fetchAllProjects();
+  },
 
 }
 

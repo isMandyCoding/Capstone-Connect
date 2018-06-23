@@ -33,7 +33,7 @@ export default {
   computed: {
     ...mapGetters(['AllProjects', 'isLoggedIn'])
     bookmarks() {
-      return this.$store.state.projects.project_page
+      return this.$store.state.projects.current_project
     }
   },
   methods: {

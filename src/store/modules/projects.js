@@ -3,24 +3,25 @@ import axios from 'axios';
 
 const state = {
   projects: [],
-  project_page: 'null',
+  current_project: null,
   requested_info: [],
   bookmarked: [],
   committed: null,
-  project_page_open_projects: [],
-  project_page_in_progress_projects: []
+  current_project_open_projects: [],
+  current_project_in_progress_projects: [],
 };
 
 const getters = {
     AllProjects: function (state) {
       return state.projects;
+
     },
     AllOpenProjects: function (state) {
       return state.projects;
     },
     getNewProject: state => state.newProject,
-    getOpenProjectsByBusinessId: state => state.project_page_open_projects,
-    getInProgressProjectsByBusinessId: state => state.project_page_in_progress_projects,
+    getOpenProjectsByBusinessId: state => state.current_project_open_projects,
+    getInProgressProjectsByBusinessId: state => state.current_project_in_progress_projects,
 };
 
 const mutations = {
@@ -31,14 +32,14 @@ const mutations = {
     state.projects.push(newProject);
   },
   setProjectPage: (state, project)=> {
-    state.project_page = project;
+    state.current_project = project;
 
   },
   setOpenProjects: (state, projects)=> {
-    state.project_page_open_projects = projects;
+    state.current_project_open_projects = projects;
   },
   setInProgressProjects: (state, projects)=> {
-    state.project_page_in_progress_projects = projects;
+    state.current_project_in_progress_projects = projects;
   },
   clear_new_project: (state) => {
     state.newProject = null;
@@ -49,7 +50,7 @@ const actions = {
   async fetchAllProjects ({ commit }) {
      await axios.get('http://localhost:8000/admin/projects')
      .then(res => {
-       console.log(res.data);
+
        commit('setProjects', res.data)
      })
      .catch(err => err);

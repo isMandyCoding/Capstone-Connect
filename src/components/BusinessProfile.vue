@@ -72,7 +72,7 @@
               <td>{{project.project_id}}</td>
               <td>
                   <router-link :to="`/projects/${project.project_id}`">
-                    <span class="project_name">{{project.project_name}}</span>
+                    <span class="project_name">{{project.project_name ? project.project_name : "Unspecified"}}</span>
                   </router-link>
               </td>
               <td>
@@ -107,7 +107,7 @@
               <td>{{project.project_id}}</td>
               <td>
                   <router-link :to="`/projects/${project.project_id}`">
-                    <span class="project_name">{{project.project_name}}</span>
+                    <span class="project_name">{{project.project_name ? project.project_name : "Untitled"}}</span>
                   </router-link>
               </td>
               <td>
@@ -163,8 +163,8 @@ export default {
     fetchData: function (){
       this.getUserById(this.$route.params.id)
         .then(res => {
-          console.log('res', res)
-          console.log('this.$store.state.users.current_user_profile', this.$store.state.users.current_user_profile)
+          // console.log('res', res)
+          // console.log('this.$store.state.users.current_user_profile', this.$store.state.users.current_user_profile)
         })
         // console.log('this.User', this.User)
         // console.log('getUserby id', this.getUserById(this.$route.params.id))
