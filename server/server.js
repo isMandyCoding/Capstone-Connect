@@ -76,7 +76,7 @@ app.post('/new_user', function(req, res){
 
 app.get('/projects/:id', function(req, res){
   knex.table('projects')
-  .where({"project_id": req.params.id})
+  .where({'project_id': req.params.id})
   .innerJoin('users', 'projects.project_owner_id', '=', 'users.user_id')
   .then(project => res.json(project))
   .catch((err)=> console.log(err));
@@ -99,15 +99,15 @@ app.get('/student/messages/:id', function(req, res, next){
   })
 })
 
-  app.get('/admin/permissions/businesses', function(req, res, next){
+app.get('/admin/permissions/businesses', function(req, res, next){
     knex('businesses')
     .select('business_id','bcontact_name', 'contact_company')
     .then(businesses => {
       res.json(businesses)
     })
-  })
+})
 
-  app.get('/admin/permissions/students', function(req, res, next){
+app.get('/admin/permissions/students', function(req, res, next){
       knex('students')
       .select('students.name','students.is_assigned')
       .then(businesses => {
@@ -117,11 +117,19 @@ app.get('/student/messages/:id', function(req, res, next){
 
 app.get('/business/messages/:id', function(req, res, next){
   knex('messages')
-  .where({"business_id": req.params.id})
+  .where({'sender_id': req.params.id})
   .then(messages => res.json(messages))
 
 })
 
+app.delete('/projects/delete/:id', function (req, res, next){
+  knex('projects')
+    .where({'project_id': req.params.id })
+    .del()
+    .then(num => {
+      res.json(num)
+  })
+})
 
 
 app.listen(port, function() {

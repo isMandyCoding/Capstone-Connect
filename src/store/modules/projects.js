@@ -33,7 +33,6 @@ const mutations = {
   },
   setProjectPage: (state, project)=> {
     state.current_project = project;
-
   },
   setOpenProjects: (state, projects)=> {
     state.current_project_open_projects = projects;
@@ -43,6 +42,9 @@ const mutations = {
   },
   clear_new_project: (state) => {
     state.newProject = null;
+  },
+  delete_project: (state, project) => {
+    state.projects = state.filter(ele => ele !== project)
   }
 };
 
@@ -61,6 +63,14 @@ const actions = {
     await axios.get(`http://localhost:8000/projects/${id}`)
     .then(res => {
       commit('setProjectPage', res.data[0]);
+    })
+    .catch(err => err);
+  },
+
+  async deleteProjectById ({ commit }, id){
+    await axios.post(`http://localhost:8000/projects/delete/${id}`)
+    .then(res => {
+      commit('delete_project', res.data[0]);
     })
     .catch(err => err);
   },
