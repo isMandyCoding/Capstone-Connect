@@ -7,7 +7,7 @@
       <th>Project Name</th>
       <th>Role</th>
       <th>Project Type</th>
-      <th>Committed Student</th>
+      <th>Committed Student ID</th>
       <th>Delete</th>
   </tr></thead>
 

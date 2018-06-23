@@ -27,13 +27,13 @@
           </sui-menu-item>
 
           <sui-menu-item right>
-               <p><span class="count">30</span> open projects</p>
+               <p><span v-if="AllOpenProjects" class="count">{{ AllOpenProjects.length }}</span> open projects</p>
            </sui-menu-item>
            <sui-menu-item>
-               <p><span class="count">6</span> in progress</p>
+               <p><span v-if="AllInProgressProjects" class="count">{{ AllInProgressProjects.length }}</span> in progress</p>
            </sui-menu-item>
            <sui-menu-item>
-               <p><span class="count">0</span> access requests</p>
+               <p><span v-if="accessRequests" class="count">{{ accessRequests.length }}</span> access requests</p>
            </sui-menu-item>
        </sui-menu>
 
@@ -57,7 +57,16 @@ import AdminProjectTable from './AdminProjectTable';
 export default {
   name: "AdminProjectsPage",
   computed: {
-    ...mapGetters(['isBusiness', 'isAdmin', 'AllOpenProjects', 'isLoggedIn', 'filterByRole']),
+    ...mapGetters(
+      [
+        'isBusiness',
+        'isAdmin',
+        'AllOpenProjects',
+        'AllInProgressProjects',
+        'isLoggedIn',
+        'filterByRole',
+        'accessRequests'
+      ]),
     role: {
       get: function (){
         return this.role;
@@ -150,7 +159,7 @@ table {
 .wrapper {
 	height: 95px;
 	width: 100%;
-	background-image: url("../img/gerome-bruneau-65759-unsplash.jpg");
+	background-image: url("../img/klemen-tusar-522472-unsplash.jpg");
   background-size: 100%;
 	position: absolute;
 	left: 0;

@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.get('/admin/projects', function(req, res, next){
   knex('projects')
   .fullOuterJoin('users', {'projects.project_owner_id': 'users.user_id'})
-  .orderBy('timestamp', 'desc')
+
   .then(projects => res.json(projects))
 })
 
@@ -59,6 +59,24 @@ app.post('/admin/new_project', function(req, res){
   .catch((err)=> console.log(err))
 })
 
+app.put('/projects/:id', function(req, res){
+  knex('projects')
+  .where ({ "projects.project_id" : req.params.id})
+  .insert({
+    project_owner_id: req.body.project_owner_id,
+    project_name: req.body.project_name,
+    project_type: req.body.project_type,
+    tools: req.body.tools,
+    paid_opportunities: req.body.paid_opportunities,
+    description: req.body.description,
+    role_type: req.body.role_type,
+    business_problem: req.body.business_problem
+  })
+  .then(projects => res.json(projects))
+  .catch((err)=> console.log(err))
+})
+
+
 app.post('/new_user', function(req, res){
   knex('users')
   .insert({
@@ -71,6 +89,54 @@ app.post('/new_user', function(req, res){
     is_approved: false,
   })
   .then(users => res.json(users))
+  .catch((err)=> console.log(err))
+})
+
+app.put('/users/:id', function(req, res){
+  knex('users')
+  .where ({ "users.user_id" : req.params.id})
+  .insert({
+    name: req.body.name,
+    email: req.body.email,
+    company: req.body.company,
+    website: req.body.website,
+    phone: req.body.phone,
+    role: req.body.role,
+    is_approved: req.body.is_approved,
+  })
+  .then(users => res.json(users))
+  .catch((err)=> console.log(err))
+})
+
+app.post('/new_message', function(req, res){
+  knex('messages')
+  .insert({
+    sender_id: req.body.sender_id,
+    recipient_id: req.body.recipient_id,
+    subject: req.body.subject,
+    message: req.body.message
+  })
+  .then(messages => res.json(messages))
+  .catch((err)=> console.log(err))
+})
+
+app.post('/new_bookmark', function(req, res){
+  knex('bookmarks')
+  .insert({
+    user_id: req.body.user_id,
+    project_id: req.body.project_id
+  })
+  .then(bookmarks => res.json(bookmarks))
+  .catch((err)=> console.log(err))
+})
+
+app.post('/requested_info', function(req, res){
+  knex('requested_info')
+  .insert({
+    user_id: req.body.user_id,
+    project_id: req.body.project_id
+  })
+  .then(messages => res.json(messages))
   .catch((err)=> console.log(err))
 })
 
@@ -122,7 +188,7 @@ app.get('/business/messages/:id', function(req, res, next){
 
 })
 
-app.delete('/projects/delete/:id', function (req, res, next){
+app.delete('/projects/:id', function (req, res, next){
   knex('projects')
     .where({'project_id': req.params.id })
     .del()
@@ -131,6 +197,39 @@ app.delete('/projects/delete/:id', function (req, res, next){
   })
 })
 
+app.delete('/users/:id', function (req, res, next){
+  knex('users')
+    .where({'user_id': req.params.id })
+    .del()
+    .then(num => {
+      res.json(num)
+  })
+})
+
+app.delete('/info_requests/:id', function (req, res, next){
+  knex('requested_info')
+    .where({'request_id': req.params.id })
+    .del()
+    .then(num => {
+      res.json(num)
+  })
+})
+app.delete('/bookmarks/:id', function (req, res, next){
+  knex('bookmarks')
+    .where({'bookmark_id': req.params.id })
+    .del()
+    .then(num => {
+      res.json(num)
+  })
+})
+app.delete('/messages/:id', function (req, res, next){
+  knex('messages')
+    .where({'message_id': req.params.id })
+    .del()
+    .then(num => {
+      res.json(num)
+  })
+})
 
 app.listen(port, function() {
   console.log("listening on port: ", port);

@@ -48,7 +48,6 @@
           Info Requests
         </router-link>
         <router-link
-          v-if="isStudent || isBusiness"
           class="item"
           to="/messages/"
           :active="isActive(this)"

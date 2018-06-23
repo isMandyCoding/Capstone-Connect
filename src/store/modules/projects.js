@@ -3,25 +3,29 @@ import axios from 'axios';
 
 const state = {
   projects: [],
+  open_projects: [],
+  in_progress_projects: [],
   current_project: null,
   requested_info: [],
   bookmarked: [],
   committed: null,
-  current_project_open_projects: [],
-  current_project_in_progress_projects: [],
+  business_profile_open_projects: [],
+  business_profile_in_progress_projects: [],
 };
 
 const getters = {
     AllProjects: function (state) {
       return state.projects;
-
     },
     AllOpenProjects: function (state) {
-      return state.projects;
+      return state.open_projects;
+    },
+    AllInProgressProjects: function (state) {
+      return state.in_progress_projects;
     },
     getNewProject: state => state.newProject,
-    getOpenProjectsByBusinessId: state => state.current_project_open_projects,
-    getInProgressProjectsByBusinessId: state => state.current_project_in_progress_projects,
+    getOpenProjectsByBusinessId: state => state.business_profile_open_projects,
+    getInProgressProjectsByBusinessId: state => state.business_profile_in_progress_projects,
 };
 
 const mutations = {
@@ -34,11 +38,17 @@ const mutations = {
   setProjectPage: (state, project)=> {
     state.current_project = project;
   },
-  setOpenProjects: (state, projects)=> {
-    state.current_project_open_projects = projects;
+  setBusinessProfileOpenProjects: (state, projects)=> {
+    state.business_profile_open_projects = projects;
   },
   setInProgressProjects: (state, projects)=> {
-    state.current_project_in_progress_projects = projects;
+    state.business_profile_in_progress_projects = projects;
+  },
+  setOpenProjects: (state, projects)=> {
+    state.open_projects = projects;
+  },
+  setInProgressProjects: (state, projects)=> {
+    state.in_progress_projects = projects;
   },
   clear_new_project: (state) => {
     state.newProject = null;
@@ -52,8 +62,9 @@ const actions = {
   async fetchAllProjects ({ commit }) {
      await axios.get('http://localhost:8000/admin/projects')
      .then(res => {
-
        commit('setProjects', res.data)
+       commit('setOpenProjects', res.data.filter(ele => ele.committed_student_id === null))
+       commit('setInProgressProjects', res.data.filter(ele => ele.committed_student_id !== null))
      })
      .catch(err => err);
 
@@ -85,7 +96,7 @@ const actions = {
   async fetchAllOpenProjects ({ commit }) {
     await axios('http://localhost:8000/student/projects')
      .then(res => {
-       commit('setProjects', res.data)
+       commit('setOpenProjects', res.data)
      })
      .catch(err => err);
   },

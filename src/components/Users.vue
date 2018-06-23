@@ -19,6 +19,7 @@
         <table v-if="isLoggedIn" class="ui celled table">
           <thead>
             <tr>
+              <th>User ID</th>
               <th>Company</th>
               <th>Name</th>
               <th>Email</th>
@@ -29,6 +30,7 @@
           <tbody>
             <tr v-for="user in allUsers" :key="user.user_id">
 
+              <td>{{user.user_id}}</td>
               <td>{{user.company}}</td>
               <td>
                   <router-link :to="`/users/${user.user_id}`">
