@@ -54,7 +54,8 @@ const mutations = {
     state.newProject = null;
   },
   delete_project: (state, project) => {
-    state.projects = state.filter(ele => ele !== project)
+    var projects = state.projects;
+    projects.splice(todos.indexOf(project), 1);
   }
 };
 
@@ -70,16 +71,18 @@ const actions = {
 
   },
 
-  async getProjectById ({ commit }, id){
-    await axios.get(`http://localhost:8000/projects/${id}`)
+  async getProjectById ({ commit }, project){
+    commit()
+    await axios.get(`http://localhost:8000/projects/${project.project_id}`)
     .then(res => {
       commit('setProjectPage', res.data[0]);
     })
     .catch(err => err);
   },
 
-  async deleteProjectById ({ commit }, id){
-    await axios.post(`http://localhost:8000/projects/delete/${id}`)
+  async deleteProjectById ({ commit }, project){
+    console.log('project in deleteProjectById', project)
+    await axios.delete(`http://localhost:8000/projects/${project.project_id}`)
     .then(res => {
       commit('delete_project', res.data[0]);
     })

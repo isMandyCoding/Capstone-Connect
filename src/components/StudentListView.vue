@@ -24,7 +24,7 @@
             v-model="current.skills"
           />
       </th>
-      <th>View</th>
+      <th>Title</th>
       <th>Save</th>
   </tr></thead>
 
@@ -35,7 +35,7 @@
       <td>{{project.company ? project.company: "No company given"}}</td>
       <td>
         <i v-if="project.role_type.includes('Data')" class="flask icon"></i>
-        <i v-if="project.role_type.includes('Web')" class="globe icon"></i>
+        <i v-if="project.role_type.includes('Web')" class="cloud icon"></i>
         {{project.project_type}}
       </td>
       <td>{{project.tools.slice(0, 120)}}</td>

@@ -27,7 +27,7 @@ export const router = new VueRouter({
   mode: 'history',
   routes: [
     //{ path: '/', component: ImageList },
-    { path: '/home', component: Welcome },
+    { path: '/', component: Welcome },
     { path: '/upload', component: NewProjectForm },
     { path: '/oauth2/callback', component: AuthHandler },
 

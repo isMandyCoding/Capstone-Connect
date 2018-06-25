@@ -15,7 +15,7 @@
           class="highlight"
             :active="isActive('Full Stack Web Developer')"
             @click="clickedRole('Full Stack Web Developer')"
-          ><i class="globe icon"></i>Full Stack Web Developer
+          ><i class="cloud icon"></i>Full Stack Web Developer
           </sui-menu-item>
           <sui-menu-item
             class="highlight"

@@ -35,7 +35,7 @@
           basic
           color="orange"
           icon="trash alternate"
-          v-on:click="removeElement(project.project_id)"
+          v-on:click="removeElement(project)"
           />
       </td>
     </tr>
@@ -55,9 +55,10 @@ export default {
   },
   methods: {
     ...mapActions(['fetchAllProjects', 'deleteProjectById']),
-    removeElement: function (index) {
-      console.log('project id to be deleted ', index)
-      this.deleteProjectById(index);
+    removeElement: function (project) {
+      console.log('project to be deleted ', project)
+      this.deleteProjectById(project);
+      this.fetchAllProjects();
     }
   },
   created() {
