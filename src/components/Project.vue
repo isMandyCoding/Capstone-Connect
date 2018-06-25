@@ -43,7 +43,7 @@
 
         <h3>Contact</h3>
         <p v-if="project.name">{{ project.name }}</p>
-        <p v-if="project.name">"No name given"</p>
+        <p v-else>"No name given"</p>
         <p v-if="project.website"><i class="linkify icon"></i>{{project.website}}</p>
         <p v-if="project.email"><i class="envelope icon"></i>{{project.email}}</p>
         <p v-if="project.phone"><i class="phone icon"></i>{{project.phone}}</p>
@@ -81,6 +81,7 @@ export default {
   computed: {
     ...mapGetters(['isLoggedIn', 'isAdmin', 'isStudent', 'isBusiness']),
     project() {
+      console.log(this.$store.state.projects.current_project)
       return this.$store.state.projects.current_project
     }
   },
@@ -96,7 +97,7 @@ export default {
     fetchData: function (){
       this.getProjectById(this.$route.params.id)
         .then(res => {
-          console.log('this.$store.state.projects', this.$store.state.projects)
+          console.log('this.$store.state.projects.current_project', this.$store.state.projects.current_project)
         })
         // console.log('this.project', this.project)
         // console.log('getprojectby id', this.getProjectById(this.$route.params.id))

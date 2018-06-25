@@ -71,9 +71,8 @@ const actions = {
 
   },
 
-  async getProjectById ({ commit }, project){
-    commit()
-    await axios.get(`http://localhost:8000/projects/${project.project_id}`)
+  async getProjectById ({ commit }, project_id){
+    await axios.get(`http://localhost:8000/projects/${project_id}`)
     .then(res => {
       commit('setProjectPage', res.data[0]);
     })
@@ -105,7 +104,7 @@ const actions = {
   },
 
   async fetchOpenProjectsById ({ commit }, id) {
-    await axios('http://localhost:8000/users/:id/projects')
+    await axios('http://localhost:8000/projects/:id/')
      .then(res => {
        commit('setProjects', res.data)
      })
