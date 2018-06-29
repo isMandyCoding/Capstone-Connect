@@ -24,6 +24,11 @@ app.get('/admin/projects', function(req, res, next){
   .then(projects => res.json(projects))
 })
 
+app.post('/login', function(req, res, next){
+  knex('users').where('email',req.body.email)
+  .then(data => data.length ? res.json(data[0]) : res.json({error: 'user not found'}))
+})
+
 app.get('/users', function(req, res, next){
   knex('users')
   .then(users => res.json(users))
@@ -55,6 +60,7 @@ app.get('/bookmarks/:id', function(req, res, next){
 
 app.post('/admin/new_project', function(req, res){
   knex('projects')
+  .returning('*')
   .insert({
     project_owner_id: req.body.project_owner_id,
     project_name: req.body.project_name,
@@ -70,9 +76,10 @@ app.post('/admin/new_project', function(req, res){
 })
 
 app.put('/projects/:id', function(req, res){
+  console.log('It hits the database')
   knex('projects')
   .where ({ "projects.project_id" : req.params.id})
-  .insert({
+  .update({
     project_owner_id: req.body.project_owner_id,
     project_name: req.body.project_name,
     project_type: req.body.project_type,
@@ -80,9 +87,13 @@ app.put('/projects/:id', function(req, res){
     paid_opportunities: req.body.paid_opportunities,
     description: req.body.description,
     role_type: req.body.role_type,
-    business_problem: req.body.business_problem
+    business_problem: req.body.business_problem,
+    committed_student_id: req.body.committed_student_id
   })
-  .then(projects => res.json(projects))
+  .then(projects => {
+    console.log(projects)
+    res.json(projects)
+  })
   .catch((err)=> console.log(err))
 })
 
@@ -114,7 +125,11 @@ app.put('/users/:id', function(req, res){
     role: req.body.role,
     is_approved: req.body.is_approved,
   })
-  .then(users => res.json(users))
+  .then(users => {
+    console.log('result of put route for users/:id', users)
+    res.json(users)
+
+  })
   .catch((err)=> console.log(err))
 })
 
@@ -157,6 +172,7 @@ app.get('/projects/:id', function(req, res){
   .then(project => res.json(project))
   .catch((err)=> console.log(err));
 })
+
 
 app.get('/student/projects', function(req, res, next){
   knex('projects')

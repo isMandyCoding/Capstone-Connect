@@ -17,6 +17,7 @@ import BusinessProfile from './components/BusinessProfile';
 import Users from './components/Users';
 import NewUserForm from './components/NewUserForm';
 import Bookmarks from './components/Bookmarks';
+import EditProjectForm from './components/EditProjectForm';
 
 
 Vue.use(VueRouter);
@@ -49,7 +50,8 @@ export const router = new VueRouter({
     { path: '/student/projects/card_view', component: StudentCardView },
 
     //for businesses
-    { path: '/business/new_project', component: NewProjectForm }
+    { path: '/business/new_project', component: NewProjectForm },
+    { path: '/projects/edit/:id', component: EditProjectForm }
   ]
 })
 

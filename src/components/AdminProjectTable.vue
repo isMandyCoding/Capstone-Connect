@@ -8,6 +8,7 @@
       <th>Role</th>
       <th>Project Type</th>
       <th>Committed Student ID</th>
+      <th>Edit</th>
       <th>Delete</th>
   </tr></thead>
 
@@ -28,6 +29,16 @@
         {{project.project_type ? project.project_type : "Unspecified"}}
       </td>
       <td>{{project.committed_student_id ? project.committed_student_id : "None" }}</td>
+      <td>
+        <router-link v-if="project" :to="`/projects/edit/${project.project_id}`">
+          <sui-button
+            tiny
+            basic
+            color="orange"
+            icon="edit outline">
+          </sui-button>
+        </router-link>
+      </td>
       <td>
         <sui-button
           v-if="project"
@@ -56,13 +67,12 @@ export default {
   methods: {
     ...mapActions(['fetchAllProjects', 'deleteProjectById']),
     removeElement: function (project) {
-      console.log('project to be deleted ', project)
       this.deleteProjectById(project);
-      this.fetchAllProjects();
+      // this.fetchAllProjects();
+      // this.$forceUpdate();
     }
   },
   created() {
-    console.log('the state is now', this.$store.state.projects.projects)
     this.fetchAllProjects();
   },
 

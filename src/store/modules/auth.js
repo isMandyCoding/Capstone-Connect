@@ -1,13 +1,14 @@
-import api from '../../api/imgur';
+// import api from '../../api/imgur';
 import qs from 'qs';
 import { router } from '../../main';
+import axios from 'axios';
 
 // const state = {
 //   token: window.localStorage.getItem('imgur_token'),
 //   role: null,
 //   id: null
 // };
-//
+
 
 //
 // const mutations = {
@@ -24,16 +25,15 @@ import { router } from '../../main';
 //     state.isAdmin = boolean;
 //   }
 // };
-
+let user = JSON.parse(window.localStorage.getItem('currentUser')) || null
 const state = {
-  token: window.localStorage.getItem('imgur_token'),
-  role: "student",
-  id: 28,
-  email: "anna.peralta@galvanize.com"
+  role: user ? user.role : "",
+  id: user ? user.user_id : null,
+  email: user ? user.email : ""
 };
 
 const getters = {
-  isLoggedIn: () => true ,//state => !!state.token,
+  isLoggedIn: state => !!state.id,
   isAdmin: state => state.role === "admin",
   isStudent: state => state.role === "student",
   isBusiness: state => state.role === "business",
@@ -41,26 +41,43 @@ const getters = {
 };
 
 const mutations = {
-  setToken: (state, token) => {
-    state.token = token;
+  setUser: (state, user) => {
+    state.role = user ? user.role : "";
+    state.id = user ? user.user_id : null;
+    state.email = user ? user.email : "";
   }
 };
 
 const actions = {
-  login: () => {
-    api.login();
+  login: ({commit}, userEmail) => {
+    // api.login();
+    axios.post('http://localhost:8000/login', { email: userEmail })
+    .then(response => {
+      if(!response.data.error){
+        window.localStorage.setItem('currentUser', JSON.stringify(response.data));
+
+        commit('setUser', response.data)
+        let uri = response.data.role === 'business' ? `/users/${response.data.user_id}` : `/${response.data.role}/projects`
+
+        router.push(uri);
+      }
+      else{
+        console.log(response.data.error)
+      }
+    })
   },
   logout: ({ commit }) => {
-    commit('setToken', null);
-    window.localStorage.removeItem('imgur_token');
-  },
-  finalizeLogin: ({ commit }, hash) => {
-    const query = qs.parse(hash.replace('#', ''));
-
-    commit('setToken', query.access_token);
-    window.localStorage.setItem('imgur_token', query.access_token);
-    router.push('/');
+    commit('setUser', null);
+    window.localStorage.removeItem('currentUser');
+    router.push('/')
   }
+  // finalizeLogin: ({ commit }, hash) => {
+  //   const query = qs.parse(hash.replace('#', ''));
+  //
+  //   commit('setToken', query.access_token);
+  //   window.localStorage.setItem('imgur_token', query.access_token);
+  //   router.push('/');
+  // }
 };
 
 export default {

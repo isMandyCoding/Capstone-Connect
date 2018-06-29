@@ -81,7 +81,6 @@ export default {
   computed: {
     ...mapGetters(['isLoggedIn', 'isAdmin', 'isStudent', 'isBusiness']),
     project() {
-      console.log(this.$store.state.projects.current_project)
       return this.$store.state.projects.current_project
     }
   },

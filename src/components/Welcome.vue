@@ -14,10 +14,13 @@
 
                   <sui-segment piled>
                     <h2>Log In</h2>
-                    <sui-form>
+                    <sui-form @submit.prevent="handleSubmit">
                       <sui-form-field>
                         <label>E-Mail</label>
-                        <input >
+                        <input
+                          type="text"
+                          v-model="login_info.email"
+                        >
                       </sui-form-field>
                       <sui-form-field>
                         <label>Password</label>
@@ -39,9 +42,19 @@ export default {
   name: "Welcome",
   data() {
     return {
-      value: '1',
+      login_info: {
+        email: ""
+      }
     };
   },
+  methods: {
+    ...mapActions([
+      'login']
+    ),
+    handleSubmit: function(){
+      this.login(this.login_info.email)
+    }
+  }
 }
 </script>
 

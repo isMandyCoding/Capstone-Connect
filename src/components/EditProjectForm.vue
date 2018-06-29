@@ -5,17 +5,25 @@
     <div class="container">
 
 
-      <h1>CREATE A PROJECT</h1>
+      <h1>EDIT A PROJECT</h1>
 
       <sui-form @submit.prevent="handleSubmit">
-
 
         <sui-form-field v-if="isAdmin">
           <h3>Business Contact</h3>
           <input
              type="text"
-             placeholder="Enter business ID"
-             v-model="newProject.project_owner_id">
+             :placeholder="`${project ? project.project_owner_id : 'None'}`"
+             v-model="editedProject.project_owner_id"
+          >
+        </sui-form-field>
+
+        <sui-form-field v-if="isAdmin">
+          <h3>Committed Student</h3>
+          <input
+             type="text"
+             :placeholder="`${project ? project.committed_student_id : 'None'}`"
+             v-model="editedProject.committed_student_id">
         </sui-form-field>
 
         <sui-form-field>
@@ -23,18 +31,18 @@
           <p>Should be a short, descriptive summary of the project.</p>
           <input
              type="text"
-             placeholder="Ex. Sales dashboard, Insurance marketplace, Health tracker"
-             v-model="newProject.project_name">
+             :placeholder="`${project ? project.project_name : 'Untitled'}`"
+             v-model="editedProject.project_name">
         </sui-form-field>
 
         <sui-form-field>
           <h3>Role Type</h3>
           <p>Is this project for a web developer or data scientist?</p>
           <sui-dropdown
-            placeholder="Full Stack Web Developer"
+            :placeholder="`${project ? project.role_type : 'Unspecified'}`"
             selection
             :options="roles"
-            v-model="newProject.role_type"
+            v-model="editedProject.role_type"
           />
         </sui-form-field>
 
@@ -44,8 +52,9 @@
           <sui-dropdown
             selection
             value="project_type"
+            :placeholder="`${project ? project.project_type : 'Unspecified'}`"
             :options="project_types"
-            v-model="newProject.project_type"
+            v-model="editedProject.project_type"
           />
         </sui-form-field>
 
@@ -54,8 +63,8 @@
           <p>What tools or technologies should the student use? (optional)</p>
           <input
             type="text"
-            placeholder="Ex. JavaScript, React, Android, iOS, Python, Java, etc."
-            v-model="newProject.tools">
+            :placeholder="`${project ? project.tools : 'Unspecified/Student\'s choice'}`"
+            v-model="editedProject.tools">
         </sui-form-field>
 
         <sui-form-field>
@@ -64,7 +73,8 @@
           <input
             type="text"
             class="tall"
-            v-model="newProject.description">
+            :placeholder="`${project ? project.description : 'No description'}`"
+            v-model="editedProject.description">
         </sui-form-field>
 
         <sui-form-field>
@@ -73,7 +83,8 @@
           <input
             type="text"
             class="medium"
-            v-model="newProject.business_problem">
+            :placeholder="`${project ? project.business_problem : 'Business problem'}`"
+            v-model="editedProject.business_problem">
         </sui-form-field>
 
 
@@ -81,10 +92,10 @@
         <sui-form-field>
           <h3>Is there an opportunity for the student to get paid for this project?</h3>
           <sui-dropdown
-            placeholder="No/Not applicable for capstone projects"
+            :placeholder="`${project ? project.paid_opportunities : 'Please choose one'}`"
             selection
             :options="payment_options"
-            v-model="newProject.paid_opportunities"
+            v-model="editedProject.paid_opportunities"
           />
         </sui-form-field>
 
@@ -101,40 +112,64 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
 import { router } from '../main';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
-  name: "Project",
-  computed: {...mapGetters([
-    'isLoggedIn',
-    'getCurrentProject',
-    'isAdmin',
-    'isStudent',
-    'getBusinesses',
-  ]) },
+  name: "EditProjectForm",
+  computed: {
+    ...mapGetters([
+      'isLoggedIn',
+      'getCurrentProject',
+      'isAdmin',
+      'isStudent',
+      'getBusinesses',
+    ]),
+    project() {
+      return this.$store.state.projects.current_project;
+    }
+   },
+  created (){
+    this.fetchData()
+  },
+  watch: {
+    '$route': 'fetchData'
+  },
   methods: {
-    ...mapActions(['addNewProject', 'fetchAllOpenProjects']),
+    ...mapActions([
+      'updateProject',
+      'fetchAllOpenProjects',
+      'getProjectById']
+    ),
     handleSubmit: function(){
-      // this.addNewProject()
-      this.addNewProject(this.newProject);
+      this.updateProject(this.editedProject);
+      console.log("i handled submit of this object ", this.editedProject)
       this.fetchAllOpenProjects();
-      router.push('/admin/projects')
+      router.go(-1);
+    },
+    fetchData: function (){
+      this.getProjectById(this.$route.params.id)
+        .then((res) => {
+          console.log('params id', this.$route.params.id)
+          console.log('project in fetchdata ', this.$store.state.projects.current_project)
+          this.editedProject = this.$store.state.projects.current_project;
+        })
     }
   },
   data() {
     return {
-      newProject:
+      editedProject:
       {
-               "project_owner_id": null,
-               "committed_student_id": null,
-               "project_name": "Short and descriptive title",
-               "project_type": "Capstone",
-               "tools": "Javascript",
-               "paid_opportunities": "this is a capstone project",
-               "role_type": "Web Developer",
-               "description": "",
-               "business_problem": ""
+               "project_id": Number(this.$route.params.id),
+               "project_owner_id": this.project ? Number(this.project.project_owner_id) : null,
+               "committed_student_id":  this.project ? Number(this.project.committed_student_id) : null,
+               "project_name": this.project ? this.project.project_name : 'Untitled',
+               "project_type": this.project ? this.project.project_type : 'Unspecified',
+               "tools": this.project ? this.project.tools : 'Unspecified',
+               "paid_opportunities": this.project ? this.project.paid_opportunities : 'Unspecified',
+               "role_type": this.project ? this.project.role_type : 'Unspecified',
+               "description": this.project ? this.project.description : '',
+               "business_problem": this.project ? this.project.business_problem : ''
       },
       project_types: [
         { key : 'capstone', text: "Capstone", value: "capstone"},

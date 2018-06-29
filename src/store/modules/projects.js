@@ -54,8 +54,19 @@ const mutations = {
     state.newProject = null;
   },
   delete_project: (state, project) => {
+    console.log(project)
     var projects = state.projects;
-    projects.splice(todos.indexOf(project), 1);
+    projects.splice(projects.indexOf(project), 1);
+  },
+  edit_project: (state, edited_project) => {
+    console.log('the object sent to mutations was ', edited_project)
+    state.projects = state.projects.map(ele => {
+      if (ele.project_id === edited_project.project_id){
+        return edited_project;
+      } else {
+        return ele;
+      }
+    })
   }
 };
 
@@ -80,31 +91,45 @@ const actions = {
   },
 
   async deleteProjectById ({ commit }, project){
-    console.log('project in deleteProjectById', project)
     await axios.delete(`http://localhost:8000/projects/${project.project_id}`)
     .then(res => {
-      commit('delete_project', res.data[0]);
+      if(res.data)
+        commit('delete_project', project);
     })
     .catch(err => err);
   },
 
   addNewProject ({ commit }, newProject ){
     axios.post('http://localhost:8000/admin/new_project', newProject)
-    .then( () => {
-      commit('addProject', newProject);
+    .then( (response) => {
+      commit('addProject', response.data[0]);
     })
   },
 
+  async updateProject ({ commit }, editedProject ){
+    console.log("the action updateProject was called and the object sent to actions was", editedProject)
+    console.log("the action update project is doing a 'put' method for the project id ", editedProject.project_id)
+
+    await axios.put(`http://localhost:8000/projects/${editedProject.project_id}`, editedProject)
+    .then( (res) => {
+      console.log('res in updateproject action is ', res)
+      commit('edit_project', editedProject)
+    })
+    .catch(err => {
+      console.log("The error is here", err)
+    });
+  },
+
   async fetchAllOpenProjects ({ commit }) {
-    await axios('http://localhost:8000/student/projects')
+    await axios.get('http://localhost:8000/student/projects')
      .then(res => {
        commit('setOpenProjects', res.data)
      })
      .catch(err => err);
   },
 
-  async fetchOpenProjectsById ({ commit }, id) {
-    await axios('http://localhost:8000/projects/:id/')
+  async fetchOpenProjectsByUserId ({ commit }, user_id) {
+    await axios.get(`http://localhost:8000/projects/${user_id}/`)
      .then(res => {
        commit('setProjects', res.data)
      })
@@ -117,6 +142,7 @@ const actions = {
     })
     commit('setProjects', filtered)
   },
+
   filterById ({rootState, commit}, id){
     let project = rootState.projects.projects.filter(function(ele){
       return ele.project_id === id;
